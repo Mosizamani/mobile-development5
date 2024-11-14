@@ -8,6 +8,8 @@ export const useAPI = () => {
 
     const fetchPictures = async (limit: number) => {
 
+        setLoading(true)
+
         if(!process.env.EXPO_PUBLIC_API_KEY) {
             throw new Error('API key not specified')
         }
@@ -18,10 +20,16 @@ export const useAPI = () => {
                     'x-api-key': process.env.EXPO_PUBLIC_API_KEY
                 }
             })
+
+            console.log(response)
+
         } catch (err) {
             setError(`Error: ${err}`)
+        } finally {
+            setLoading(false)
         }
     }
 
-    return { loading, error, data, fetchPictures }
+
+    return { fetchPictures, loading, error, data }
 }
